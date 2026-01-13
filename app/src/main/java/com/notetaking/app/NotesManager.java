@@ -42,7 +42,7 @@ public class NotesManager {
     public void updateNote(Note updatedNote) {
         List<Note> notes = loadNotes();
         for (int i = 0; i < notes.size(); i++) {
-            if (notes.get(i).getId() == updatedNote.getId()) {
+            if (notes.get(i).getId().equals(updatedNote.getId())) {
                 notes.set(i, updatedNote);
                 break;
             }
@@ -50,10 +50,10 @@ public class NotesManager {
         saveNotes(notes);
     }
 
-    public void deleteNote(long noteId) {
+    public void deleteNote(String noteId) {
         List<Note> notes = loadNotes();
         for (int i = 0; i < notes.size(); i++) {
-            if (notes.get(i).getId() == noteId) {
+            if (notes.get(i).getId().equals(noteId)) {
                 notes.remove(i);
                 break;
             }

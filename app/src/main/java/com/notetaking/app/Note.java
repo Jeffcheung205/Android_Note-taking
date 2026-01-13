@@ -4,15 +4,16 @@ import java.io.Serializable;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
+import java.util.UUID;
 
 public class Note implements Serializable {
-    private long id;
+    private String id;
     private String title;
     private String content;
     private long timestamp;
 
     public Note() {
-        this.id = System.currentTimeMillis();
+        this.id = UUID.randomUUID().toString();
         this.timestamp = System.currentTimeMillis();
     }
 
@@ -22,11 +23,11 @@ public class Note implements Serializable {
         this.content = content;
     }
 
-    public long getId() {
+    public String getId() {
         return id;
     }
 
-    public void setId(long id) {
+    public void setId(String id) {
         this.id = id;
     }
 

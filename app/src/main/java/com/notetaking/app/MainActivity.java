@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,8 +17,7 @@ public class MainActivity extends AppCompatActivity implements NotesAdapter.OnNo
     private TextView emptyTextView;
     private NotesAdapter adapter;
     private NotesManager notesManager;
-    private static final int REQUEST_CODE_ADD = 1;
-    private static final int REQUEST_CODE_EDIT = 2;
+    private ActivityResultLauncher<Intent> noteEditorLauncher;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -37,9 +38,15 @@ public class MainActivity extends AppCompatActivity implements NotesAdapter.OnNo
 
         updateEmptyView();
 
+        // Register activity result launcher
+        noteEditorLauncher = registerForActivityResult(
+                new ActivityResultContracts.StartActivityForResult(),
+                result -> refreshNotes()
+        );
+
         fab.setOnClickListener(v -> {
             Intent intent = new Intent(MainActivity.this, NoteEditorActivity.class);
-            startActivityForResult(intent, REQUEST_CODE_ADD);
+            noteEditorLauncher.launch(intent);
         });
     }
 
@@ -69,6 +76,6 @@ public class MainActivity extends AppCompatActivity implements NotesAdapter.OnNo
     public void onNoteClick(Note note) {
         Intent intent = new Intent(this, NoteEditorActivity.class);
         intent.putExtra("note", note);
-        startActivityForResult(intent, REQUEST_CODE_EDIT);
+        noteEditorLauncher.launch(intent);
     }
 }
